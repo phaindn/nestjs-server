@@ -12,7 +12,7 @@ export class User {
   email: string;
 
   @Column()
-  gender: string;
+  gender: number;
 
   @Column()
   dob: Date;

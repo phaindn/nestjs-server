@@ -16,6 +16,7 @@ import { JwtStrategy } from './jwt.strategy';
           expiresIn: configService.get<string>('JWT_EXPIRES_IN'),
         },
       }),
+      inject: [ConfigService],
     }),
   ],
   controllers: [AuthController],

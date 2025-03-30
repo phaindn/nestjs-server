@@ -6,5 +6,6 @@ import { UsersModule } from './users/users.module';
 @Module({
   imports: [AuthModule, UsersModule],
   controllers: [V1Controller],
+  exports: [AuthModule, UsersModule],
 })
 export class V1ApiModule {}
