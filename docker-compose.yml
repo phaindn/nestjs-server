@@ -1,7 +1,7 @@
 version: "3"
 services:
-  nestjs-example:
-    # image: nestjs-example:local
+  server:
+    # image: server:local
     build:
       context: ./
       dockerfile: ./Dockerfile
@@ -13,7 +13,7 @@ services:
     volumes:
       - ./:/app
       - /app/node_modules
-    command: sh -c "yarn dev"
+    command: sh -c "npm run dev"
     env_file:
       - ./env/.env
 
@@ -21,22 +21,24 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - database:/var/lib/postgresql/data
+    env_file:
+      - ./env/.env
 
-  redis:
-    image: redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis:/data
+  # redis:
+  #   image: redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis:/data
 
 volumes:
-  redis:
-    driver: local
+  # redis:
+  #   driver: local
   database:

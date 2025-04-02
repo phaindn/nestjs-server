@@ -12,10 +12,12 @@ WORKDIR /usr/src/app
 # Copying this first prevents re-running npm install on every code change.
 COPY --chown=node:node package*.json yarn.lock ./
 
-RUN yarn config set "strict-ssl" false -g
+# RUN yarn config set "strict-ssl" false -g
+
+# RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf
 
 # Install app dependencies using the `npm ci` command instead of `npm install`
-RUN yarn install --frozen-lockfile --verbose
+RUN npm ci
 
 # Bundle app source
 COPY --chown=node:node . .
@@ -42,7 +44,7 @@ COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modul
 COPY --chown=node:node . .
 
 # Run the build command which creates the production bundle
-RUN yarn build
+RUN npm run build
 
 # Set NODE_ENV environment variable
 ENV NODE_ENV production
@@ -50,7 +52,7 @@ ENV NODE_ENV production
 # Running `npm ci` removes the existing node_modules directory.
 # Passing in --only=production ensures that only the production dependencies are installed.
 # This ensures that the node_modules directory is as optimized as possible.
-RUN yarn install --frozen-lockfile
+RUN npm ci
 
 USER node
 
