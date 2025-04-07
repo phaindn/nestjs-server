@@ -10,17 +10,16 @@ WORKDIR /usr/src/app
 # Copy application dependency manifests to the container image.
 # A wildcard is used to ensure copying both package.json AND package-lock.json (when available).
 # Copying this first prevents re-running npm install on every code change.
-COPY --chown=node:node package*.json yarn.lock ./
-
-# RUN yarn config set "strict-ssl" false -g
-
-# RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf
+COPY --chown=node:node package*.json ./
 
 # Install app dependencies using the `npm ci` command instead of `npm install`
 RUN npm ci
 
 # Bundle app source
 COPY --chown=node:node . .
+
+RUN chown -R node:node /usr/src/app
+# RUN chmod -R 777 /usr/src/app/dist
 
 # Use the node user from the image (instead of the root user)
 USER node
@@ -33,7 +32,7 @@ FROM node:20-alpine As build
 
 WORKDIR /usr/src/app
 
-COPY --chown=node:node package*.json yarn.lock ./
+COPY --chown=node:node package*.json ./
 
 # In order to run `npm run build` we need access to the Nest CLI.
 # The Nest CLI is a dev dependency,
