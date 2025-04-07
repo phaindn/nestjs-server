@@ -5,6 +5,7 @@ import { ApiModule } from './modules/api/api.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configurations from './configs/default';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SocketModule } from './modules/socket/socket.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       inject: [ConfigService],
     }),
     ApiModule,
+    SocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],
